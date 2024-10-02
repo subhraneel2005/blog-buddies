@@ -23,8 +23,7 @@ export default function LandingPage() {
         <Button>Start Writing</Button>
         <Button variant="outline">Explore</Button>
       </div>
-
-      <div className='mb-32'></div>
+      <div className='mb-24'></div>
     </div>
   )
 }
