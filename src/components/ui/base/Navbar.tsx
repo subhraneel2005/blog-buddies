@@ -7,11 +7,23 @@ import { cn } from '@/lib/utils'
 import { Button, buttonVariants } from '../button'
 import { FaGithub, FaStar } from 'react-icons/fa'
 import Link from 'next/link'
+import { useSession, signIn, signOut } from 'next-auth/react'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function Navbar() {
 
     const { setTheme } = useTheme()
     const [isDark, setisDark] = useState(false);
+    const session = useSession();
+    const user = session.data?.user;
 
     const themeToggle = () => {
         setisDark(!isDark);
@@ -21,7 +33,7 @@ export default function Navbar() {
   return (
     <div className='flex justify-between items-center w-full px-6 py-4'>
         <div className='flex items-center space-x-4'>
-        <h1 className='font-bold md:text-2xl text-xl bg-gradient-to-r from-indigo-600 to-purple-800 dark:bg-gradient-to-r dark:from-indigo-400 dark:to-purple-600 bg-clip-text text-transparent'>BlogBuddies</h1>
+        <h1 className='font-bold md:text-2xl text-xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 dark:from-purple-300 dark:via-purple-400 dark:to-purple-500'>BlogBuddies</h1>
         <Link href='https://github.com/subhraneel2005/blog-buddies' target='_blank'>
           <Button variant="outline" className='hidden md:flex gap-2'>
             <FaGithub size={20}/>
@@ -30,7 +42,21 @@ export default function Navbar() {
         </Link>
         </div>
         <div className='flex items-center gap-4'>
-        <Button>Login</Button>
+        {user ? 
+          <DropdownMenu>
+          <DropdownMenuTrigger>
+          <Avatar className='border-2 border-zinc-900 dark:border-zinc-200 rounded-full'>
+            <AvatarImage src={user?.image!} />
+            <AvatarFallback>CP</AvatarFallback>
+          </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className='flex flex-col space-y-4 py-6 px-7 mt-4'>
+           <Button variant='outline' onClick={() => signOut()}>Logout</Button>
+           <Button>Write a Blog</Button>
+          </DropdownMenuContent>
+         </DropdownMenu>
+        
+         : <Button onClick={() => signIn()}>Login</Button>}
         <Toggle
             onPressedChange={themeToggle}
             className={cn(
