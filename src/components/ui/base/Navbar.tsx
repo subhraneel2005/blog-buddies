@@ -45,7 +45,7 @@ export default function Navbar() {
         {user ? 
           <DropdownMenu>
           <DropdownMenuTrigger>
-          <Avatar className='border-2 border-zinc-900 dark:border-zinc-200 rounded-full'>
+          <Avatar className='border-2 border-zinc-300 rounded-full'>
             <AvatarImage src={user?.image!} />
             <AvatarFallback>CP</AvatarFallback>
           </Avatar>
