@@ -107,7 +107,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
             onClick={() => setDialogOpen(true)} 
           >
             <TagsIcon className='text-gray-500' />
-            <span className='text-gray-500 ml-2'>Tags</span>
+            <span className='text-gray-500 ml-2'>Add Tags</span>
           </Button>
         </div>
 
@@ -116,7 +116,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
             <Badge 
               key={index} 
               variant='secondary' 
-              className='mr-2 mb-2 cursor-pointer'
+              className='mr-2 ml-2 mb-2 cursor-pointer text-[9px] md:text-[14px]'
               onClick={() => handleRemoveTag(tag)} 
             >
               {tag} &times; 
@@ -129,7 +129,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
           value={title}
           onInput={handleTitleInput}
           placeholder='Blog Title...' 
-          className='text-5xl md:text-7xl text-center resize-none outline-none bg-transparent border-none w-full max-w-md placeholder-gray-500' 
+          className='text-5xl mt-6 md:text-7xl text-center resize-none outline-none bg-transparent border-none w-full max-w-md placeholder-gray-500' 
           rows={1}
           style={{ 
             overflow: 'hidden', 
@@ -143,7 +143,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
           value={body}
           onInput={handleBodyInput}
           placeholder='Write something interesting😉...' 
-          className='text-center mt-8 px-6 outline-none bg-transparent border-none text-[15px] md:text-xl w-full max-w-md placeholder-gray-400' 
+          className='text-center md:mt-8 px-6 outline-none bg-transparent border-none text-[15px] md:text-xl w-full max-w-md placeholder-gray-400' 
           rows={1} 
         />
 
