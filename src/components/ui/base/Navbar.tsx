@@ -33,7 +33,9 @@ export default function Navbar() {
   return (
     <div className='flex justify-between items-center w-full px-6 py-4'>
         <div className='flex items-center space-x-4'>
-        <h1 className='font-bold md:text-2xl text-xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 dark:from-purple-300 dark:via-purple-400 dark:to-purple-500'>BlogBuddies</h1>
+        <Link href="/">
+          <h1 className='font-bold md:text-2xl text-xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 dark:from-purple-300 dark:via-purple-400 dark:to-purple-500 cursor-pointer'>BlogBuddies</h1>
+        </Link>
         <Link href='https://github.com/subhraneel2005/blog-buddies' target='_blank'>
           <Button variant="outline" className='hidden md:flex gap-2'>
             <FaGithub size={20}/>
