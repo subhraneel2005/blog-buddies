@@ -16,6 +16,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
+  posts         Blog[] // Relation to blogs
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,4 +75,19 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model Blog {
+  id        String   @id @default(cuid())
+  title     String
+  body      String
+  thumbnail String
+  tags      String[]
+  links     String[] @default([])
+  code      String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
