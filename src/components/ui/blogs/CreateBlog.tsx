@@ -122,6 +122,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
   };
 
   return (
+    <div>
     <div className='min-h-screen w-full flex flex-col justify-center items-center p-4'>
       <div className='h-full w-full flex flex-col justify-center items-center mb-24'>
         <div className='flex gap-4 justify-center items-center w-full mb-10'>
@@ -215,12 +216,16 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
 
         <Button className='mt-12' onClick={handleCreateBlog}>Publish</Button>
       </div>
+    </div>
 
-      {existingBlogs.length > 0 && (
-        <div>
-          {existingBlogs.map(blog => (
-            <BlogCard key={blog.id} title={blog.title} body={blog.body} thumbnail={blog.thumbnail!} author={blog.author} tags={blog.tags} />
-          ))}
+    {existingBlogs.length > 0 && (
+        <div className='min-h-screen w-full flex justify-center items-center flex-col'>
+          <Badge>Your Blogs</Badge>
+          <div className='grid grid-cols-1 px-4 md:grid-cols-2 gap-5 mt-8'>
+            {existingBlogs.map(blog => (
+              <BlogCard key={blog.id} title={blog.title} body={blog.body} thumbnail={blog.thumbnail!} author={blog.author} tags={blog.tags} />
+            ))}
+          </div>
         </div>
       )}
     </div>

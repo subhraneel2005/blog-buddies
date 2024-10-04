@@ -20,7 +20,7 @@ interface BlogCardProps {
 export default function BlogCard({ title, body, thumbnail, author, tags }: BlogCardProps) {
   return (
     <Card>
-      {thumbnail && <img src={thumbnail} alt={title} className="object-cover w-full h-48" />} 
+      {thumbnail && <img src={thumbnail} alt={title} className="object-cover w-full h-48 rounded-tr-lg rounded-tl-lg" />} 
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{body.substring(0, 100)}...</CardDescription> {/* Show a preview of the body */}
