@@ -18,7 +18,6 @@ interface Blog {
   title: string;
   body: string;
   thumbnail?: string;
-  author: string;
   tags: string[];
 }
 
@@ -223,7 +222,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
           <Badge>Your Blogs</Badge>
           <div className='grid grid-cols-1 px-4 md:grid-cols-2 gap-5 mt-8'>
             {existingBlogs.map(blog => (
-              <BlogCard key={blog.id} title={blog.title} body={blog.body} thumbnail={blog.thumbnail!} author={blog.author} tags={blog.tags} />
+              <BlogCard key={blog.id} title={blog.title} body={blog.body} thumbnail={blog.thumbnail!} tags={blog.tags} />
             ))}
           </div>
         </div>

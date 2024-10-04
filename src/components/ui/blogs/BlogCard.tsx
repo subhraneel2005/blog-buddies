@@ -1,36 +1,44 @@
 import React from 'react';
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from '../badge';
+import Image from 'next/image';
 
 interface BlogCardProps {
   title: string;
   body: string;
-  thumbnail: string; 
-  author: string; 
+  thumbnail: string;
   tags: string[];
 }
 
-export default function BlogCard({ title, body, thumbnail, author, tags }: BlogCardProps) {
+export default function BlogCard({ title, body, thumbnail, tags }: BlogCardProps) {
   return (
-    <Card>
-      {thumbnail && <img src={thumbnail} alt={title} className="object-cover w-full h-48 rounded-tr-lg rounded-tl-lg" />} 
+    <Card className='w-[340px] md:w-[400px] h-[450px] md:h-[450px]'>
+      {thumbnail && (
+        <Image
+          src={thumbnail}
+          alt={title}
+          width={500}
+          height={350}
+          className="object-contain rounded-tr-lg rounded-tl-lg"
+        />
+      )}
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>{body.substring(0, 100)}...</CardDescription> {/* Show a preview of the body */}
+        {/* <CardDescription className="overflow-hidden h-6" title={body}>
+          {body.split('\n')[0]}
+        </CardDescription> */}
       </CardHeader>
-      <CardContent>
+      {/* <CardContent>
         <p>{body}</p>
-      </CardContent>
+      </CardContent> */}
       <CardFooter>
-        {author && <p>Written by: {author}</p>}
-        <div className="flex gap-2">
+        
+        <div className="flex gap-2 flex-wrap">
           {tags.map((tag, index) => (
             <Badge key={index} variant="outline">{tag}</Badge>
           ))}
