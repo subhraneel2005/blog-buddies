@@ -4,7 +4,7 @@ import SessionProviderWrapper from "@/providers/SessionProviderWrapper"
 import { ThemeProvider } from "@/providers/theme-provider";
 import DotPattern from "@/components/ui/dot-pattern";
 import Navbar from "@/components/ui/base/Navbar";
-
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Blog Buddies",
@@ -20,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SessionProviderWrapper>
+        <Toaster richColors position="top-right" duration={1}/>
         <ThemeProvider
             attribute="class"
             defaultTheme="system"

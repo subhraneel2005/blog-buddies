@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Image, Tags as TagsIcon } from 'lucide-react';
 import BlogCard from './BlogCard';
 import { useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 
 interface CreateBlogProps {
   userId: string; 
@@ -34,7 +35,8 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [existingBlogs, setExistingBlogs] = useState<Blog[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [blogs, setBlogs] = useState<Blog[]>([]); // Adjusted Blog[] type
+  const [blogs, setBlogs] = useState<Blog[]>([]); 
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { pending } = useFormStatus();
 
@@ -65,7 +67,11 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
   };
 
   const handleCreateBlog = async () => {
+
+    setLoading(true); 
+
     const formData = new FormData();
+
     formData.append('title', title);
     formData.append('body', body);
     formData.append('userId', userId);
@@ -84,10 +90,12 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
         setThumbnail('');
         setThumbnailFile(null);
         setTags([]);
-        alert("Blog published successfully!");
+        toast.success("Blog published successfully");
       }
     } catch (error) {
       console.error('Error creating blog:', error);
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -151,8 +159,8 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
               <TagsIcon className='text-gray-500' />
               <span className='text-gray-500 ml-2'>Add Tags</span>
             </Button>
-            <Button size="sm" disabled={pending} onClick={handleCreateBlog}>
-                {pending ? "Publishing..." : "Publish"} 
+            <Button size="sm" disabled={loading} onClick={handleCreateBlog}>
+              {loading ? "Publishing..." : "Publish"} 
             </Button>
           </div>
 
@@ -226,7 +234,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
       </div>
 
       {existingBlogs.length > 0 && (
-        <div className='min-h-screen w-full flex justify-center items-center flex-col py-3'>
+        <div className='min-h-screen w-full flex justify-center items-center flex-col py3'>
           <Badge>Your Blogs</Badge>
           <div className='grid grid-cols-1 px-4 md:grid-cols-2 gap-5 mt-8'>
             {existingBlogs.map(blog => (
