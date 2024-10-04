@@ -70,28 +70,48 @@ export async function POST(request: Request) {
 }
 
 
-export async function GET(request: Request){
+export async function GET(request: Request) {
   const user = await getCurrentUser();
 
   try {
-      if(!user?.email){
-          return NextResponse.json({ message: 'Not Authenticated!' }, { status: 401 })
-      }
+    if (!user?.email) {
+      return NextResponse.json({ message: 'Not Authenticated!' }, { status: 401 });
+    }
 
-      const dbUser = await prisma.user.findUnique({
-        where: {
-          email: user.email
-        }
-      })
+    
+    const dbUser = await prisma.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
 
-      const blogs = await prisma.blog.findMany({
-          where: {
-              userId: dbUser?.id
-          }
-      })
+    if (!dbUser) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+    }
 
-      return NextResponse.json(blogs, {status: 200});
+    
+    const blogs = await prisma.blog.findMany({
+      where: {
+        userId: dbUser.id, 
+      },
+      include: {
+        user: {  
+          select: {
+            name: true,
+            image: true, 
+          },
+        },
+      },
+    });
+
+    const blogsWithAuthor = blogs.map(blog => ({
+      ...blog,
+      authorName: blog.user?.name,
+      authorImage: blog.user?.image,
+    }));
+
+    return NextResponse.json(blogsWithAuthor, { status: 200 });
   } catch (error) {
-      return NextResponse.json({error: "Server error"})
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
