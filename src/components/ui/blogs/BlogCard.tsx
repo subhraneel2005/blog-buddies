@@ -29,7 +29,7 @@ export default function BlogCard({ title, body, thumbnail, author, tags }: BlogC
         <p>{body}</p>
       </CardContent>
       <CardFooter>
-        <p>Written by: {author}</p>
+        {author && <p>Written by: {author}</p>}
         <div className="flex gap-2">
           {tags.map((tag, index) => (
             <Badge key={index} variant="outline">{tag}</Badge>

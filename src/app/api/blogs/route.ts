@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/providers/prisma';
 import cloudinary from '@/lib/cloudinary';
 import { Readable } from 'stream';
+import { getCurrentUser } from '@/providers/session';
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
           title: title as string,
           body: body as string,
           thumbnail: thumbnailUrl,
-          tags: tagsArray, // Use the converted tags array
+          tags: tagsArray,
           userId: userId as string,
         },
       });
@@ -65,5 +66,32 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Error creating blog:', error);
     return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 });
+  }
+}
+
+
+export async function GET(request: Request){
+  const user = await getCurrentUser();
+
+  try {
+      if(!user?.email){
+          return NextResponse.json({ message: 'Not Authenticated!' }, { status: 401 })
+      }
+
+      const dbUser = await prisma.user.findUnique({
+        where: {
+          email: user.email
+        }
+      })
+
+      const blogs = await prisma.blog.findMany({
+          where: {
+              userId: dbUser?.id
+          }
+      })
+
+      return NextResponse.json(blogs, {status: 200});
+  } catch (error) {
+      return NextResponse.json({error: "Server error"})
   }
 }

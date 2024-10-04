@@ -20,6 +20,7 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@react-three/fiber": "^8.17.9",
     "@tabler/icons-react": "^3.19.0",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.0",
     "clsx": "^2.1.1",

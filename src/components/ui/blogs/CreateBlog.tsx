@@ -1,12 +1,13 @@
-'use client'
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Image, Tags as TagsIcon } from 'lucide-react';
 import BlogCard from './BlogCard';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'; // Importing the Dialog component
-import { Input } from '@/components/ui/input'; // Importing the Input component
-import { Image, Tags as TagsIcon, X } from 'lucide-react';
 
 interface CreateBlogProps {
   userId: string; 
@@ -23,42 +24,66 @@ interface Blog {
 
 export default function CreateBlog({ userId }: CreateBlogProps) {
   const [title, setTitle] = useState<string>('');
-  const [body, setBody] = useState<string>('');
+  const [body, setBody] = useState<string>(''); // Initializing body state
   const [thumbnail, setThumbnail] = useState<string>('');
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState<string>(''); // State for tag input
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false); // State for dialog visibility
+  const [tagInput, setTagInput] = useState<string>('');
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [existingBlogs, setExistingBlogs] = useState<Blog[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleCreateBlog = async () => {
-    const newBlog = {
-      title,
-      body,
-      thumbnail,
-      tags,
-      userId,
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get('/api/blogs');
+        setExistingBlogs(response.data);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
     };
 
-    const response = await fetch('/api/blogs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newBlog),
-    });
+    fetchBlogs();
+  }, []);
 
-    if (response.ok) {
-      const createdBlog = await response.json();
-      setExistingBlogs((prev) => [...prev, createdBlog]);
-      setTitle('');
-      setBody('');
-      setThumbnail('');
-      setTags([]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnailFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setThumbnail(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const titleRef = useRef<HTMLTextAreaElement>(null);
-  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const handleCreateBlog = async () => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('body', body);
+    formData.append('userId', userId);
+    formData.append('tags', tags.join(','));
+    
+    if (thumbnailFile) {
+      formData.append('thumbnail', thumbnailFile);
+    }
+
+    try {
+      const response = await axios.post('/api/blogs', formData);
+      if (response.status === 201) {
+        setExistingBlogs((prev) => [...prev, response.data]);
+        setTitle('');
+        setBody(''); // Clear body state
+        setThumbnail('');
+        setThumbnailFile(null);
+        setTags([]);
+        alert("Blog published successfully!");
+      }
+    } catch (error) {
+      console.error('Error creating blog:', error);
+    }
+  };
 
   const handleTitleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target;
@@ -69,6 +94,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
 
   const handleBodyInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target;
+    setBody(target.value); // Ensure the state is updated
     target.style.height = 'auto'; 
     target.style.height = `${target.scrollHeight}px`; 
   };
@@ -86,18 +112,27 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
 
   const handleTagInputKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent the default behavior of the Enter key
+      e.preventDefault();
       handleAddTag();
     }
+  };
+
+  const handleAddCoverClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
     <div className='min-h-screen w-full flex flex-col justify-center items-center p-4'>
       <div className='h-full w-full flex flex-col justify-center items-center mb-24'>
-        
-
         <div className='flex gap-4 justify-center items-center w-full mb-10'>
-          <Button variant='outline' size="sm">
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={handleFileChange} 
+            className="hidden" 
+            ref={fileInputRef}
+          />
+          <Button variant='outline' size="sm" onClick={handleAddCoverClick}>
             <Image className='text-gray-500' />
             <span className='text-gray-500 ml-2'>Add cover</span>
           </Button>
@@ -110,6 +145,8 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
             <span className='text-gray-500 ml-2'>Add Tags</span>
           </Button>
         </div>
+
+        {thumbnail && <img src={thumbnail} alt="Thumbnail preview" className="w-40 h-40 object-cover mb-4" />}
 
         <div className='flex flex-wrap mb-4'>
           {tags.map((tag, index) => (
@@ -125,7 +162,6 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
         </div>
 
         <textarea 
-          ref={titleRef}
           value={title}
           onInput={handleTitleInput}
           placeholder='Blog Title...' 
@@ -139,15 +175,13 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
         />
 
         <textarea 
-          ref={bodyRef}
-          value={body}
-          onInput={handleBodyInput}
+          value={body} 
+          onInput={handleBodyInput} 
           placeholder='Write something interesting😉...' 
           className='text-center md:mt-8 px-6 outline-none bg-transparent border-none text-[15px] md:text-xl w-full max-w-md placeholder-gray-400' 
           rows={1} 
         />
 
-        {/* Shadcn Dialog for adding tags */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>
             <DialogTitle>Add Tags</DialogTitle>
@@ -178,16 +212,17 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
             </DialogClose>
           </DialogContent>
         </Dialog>
+
+        <Button className='mt-12' onClick={handleCreateBlog}>Publish</Button>
       </div>
 
-      {existingBlogs && <div>
-        <Badge className='mt-12'>Your blogs</Badge>
-        <div className='w-full max-w-md mt-6'>
-          {/* {existingBlogs.map((blog) => (
+      {existingBlogs.length > 0 && (
+        <div>
+          {existingBlogs.map(blog => (
             <BlogCard key={blog.id} title={blog.title} body={blog.body} thumbnail={blog.thumbnail!} author={blog.author} tags={blog.tags} />
-          ))} */}
+          ))}
         </div>
-      </div>}
+      )}
     </div>
   );
 }
