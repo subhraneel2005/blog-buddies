@@ -8,11 +8,12 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 import { Input } from '@/components/ui/input';
 import { Image, Tags as TagsIcon } from 'lucide-react';
 import BlogCard from './BlogCard';
-import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
+import MDEditor from "@uiw/react-md-editor";
+import { useTheme } from "next-themes";
 
 interface CreateBlogProps {
-  userId: string; 
+  userId: string;
 }
 
 interface Blog {
@@ -21,13 +22,13 @@ interface Blog {
   body: string;
   thumbnail?: string;
   tags: string[];
-  authorName: string;  // New field for author name
-  authorImage?: string; // New field for author image
+  authorName: string;
+  authorImage?: string;
 }
 
 export default function CreateBlog({ userId }: CreateBlogProps) {
   const [title, setTitle] = useState<string>('');
-  const [body, setBody] = useState<string>(''); 
+  const [body, setBody] = useState(''); 
   const [thumbnail, setThumbnail] = useState<string>('');
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
@@ -35,17 +36,15 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [existingBlogs, setExistingBlogs] = useState<Blog[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [blogs, setBlogs] = useState<Blog[]>([]); 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { pending } = useFormStatus();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get('/api/blogs');
-        setExistingBlogs(response.data); // Data will include authorName and authorImage
-        setBlogs(response.data);
+        setExistingBlogs(response.data); 
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -67,9 +66,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
   };
 
   const handleCreateBlog = async () => {
-
     setLoading(true); 
-
     const formData = new FormData();
 
     formData.append('title', title);
@@ -86,7 +83,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
       if (response.status === 201) {
         setExistingBlogs((prev) => [...prev, response.data]);
         setTitle('');
-        setBody('');
+        setBody('');  // Resetting body here
         setThumbnail('');
         setThumbnailFile(null);
         setTags([]);
@@ -94,23 +91,9 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
       }
     } catch (error) {
       console.error('Error creating blog:', error);
-    }finally {
+    } finally {
       setLoading(false);
     }
-  };
-
-  const handleTitleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target;
-    setTitle(target.value);
-    target.style.height = 'auto'; 
-    target.style.height = `${target.scrollHeight}px`; 
-  };
-
-  const handleBodyInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target;
-    setBody(target.value);
-    target.style.height = 'auto'; 
-    target.style.height = `${target.scrollHeight}px`; 
   };
 
   const handleAddTag = () => {
@@ -135,6 +118,18 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
     fileInputRef.current?.click();
   };
 
+  const handleEditorChange = (value?: string) => {
+    setBody(value || '');
+  };
+
+  const handleTitleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const target = e.target;
+    setTitle(target.value);
+    target.style.height = 'auto'; 
+    target.style.height = `${target.scrollHeight}px`; 
+  };
+
+  
   return (
     <div>
       <div className='min-h-screen w-full flex flex-col justify-center items-center p-4'>
@@ -192,13 +187,12 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
             }} 
           />
 
-          <textarea 
+          <div className="md:mt-8 px-6 w-full max-w-5xl">
+            <MDEditor 
             value={body} 
-            onInput={handleBodyInput} 
-            placeholder='Write something interesting😉...' 
-            className=' md:mt-8 px-6 outline-none bg-transparent border-none text-[14px] md:text-[16px] text-center w-full placeholder-gray-400' 
-            rows={1} 
-          />
+            onChange={handleEditorChange} 
+           data-color-mode={theme === 'dark' ? 'dark' : 'light'}/>
+          </div>
 
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogContent>
@@ -252,5 +246,4 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
         </div>)}
     </div>
   );
-};
-    
+}
