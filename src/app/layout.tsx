@@ -20,7 +20,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SessionProviderWrapper>
-        <Toaster richColors position="top-right" duration={1}/>
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -31,6 +30,7 @@ export default function RootLayout({
               <DotPattern className="fixed inset-0 pointer-events-none" />
                 <div className="relative z-10">
                   <Navbar />
+                  <Toaster richColors position="top-right" />
                   {children}
                 </div>
             </div>
