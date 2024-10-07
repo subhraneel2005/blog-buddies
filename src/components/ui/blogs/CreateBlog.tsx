@@ -179,7 +179,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
             value={title}
             onInput={handleTitleInput}
             placeholder='Blog Title...' 
-            className='text-5xl mt-6 md:text-7xl text-center resize-none outline-none bg-transparent border-none w-full placeholder-gray-500' 
+            className='text-5xl mt-6 md:text-7xl text-center py-4 resize-none outline-none bg-transparent border-none w-full placeholder-gray-500' 
             rows={1}
             style={{ 
               overflow: 'hidden', 
