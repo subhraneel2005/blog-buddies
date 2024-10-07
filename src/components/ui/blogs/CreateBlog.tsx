@@ -11,6 +11,7 @@ import BlogCard from './BlogCard';
 import { toast } from 'sonner';
 import MDEditor from "@uiw/react-md-editor";
 import { useTheme } from "next-themes";
+import Link from 'next/link';
 
 interface CreateBlogProps {
   userId: string;
@@ -187,7 +188,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
             }} 
           />
 
-          <div className="md:mt-8 px-6 w-full max-w-5xl">
+          <div className="md:mt-8 mt-5 px-6 w-full max-w-5xl">
             <MDEditor 
             value={body} 
             onChange={handleEditorChange} 
@@ -227,12 +228,19 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
         </div>
       </div>
 
+      {existingBlogs.length===0 && (
+        <div className="flex justify-center items-center">
+          Loading...
+        </div>
+      )}
+
       {existingBlogs.length > 0 && (
         <div className='min-h-screen w-full flex justify-center items-center flex-col py3'>
           <Badge>Your Blogs</Badge>
           <div className='grid grid-cols-1 px-4 md:grid-cols-2 gap-5 mt-8'>
             {existingBlogs.map(blog => (
-              <BlogCard 
+              <Link href={`/user/${userId}/blogs/${blog.id}`}>
+                <BlogCard 
                 key={blog.id} 
                 title={blog.title} 
                 body={blog.body} 
@@ -241,6 +249,7 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
                 authorName={blog.authorName}    
                 authorImage={blog.authorImage!}
               />
+              </Link>
             ))}
             </div>
         </div>)}
