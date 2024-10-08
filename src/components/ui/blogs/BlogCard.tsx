@@ -45,13 +45,15 @@ export default function BlogCard({ blogId, title, body, thumbnail, tags, authorN
     <Link href={href!} passHref>
     <Card className='w-[350px] flex flex-col justify-between shadow-lg'>
       {thumbnail && (
-        <Image
-          src={thumbnail}
-          alt={title}
-          width={350}
-          height={350}
-          className="object-contain rounded-tr-lg rounded-tl-lg"
+        <img
+        src={thumbnail}
+        alt={title}
+        width={350}
+        height={350}
+        className="object-contain rounded-tr-lg rounded-tl-lg"
+        loading='lazy'
         />
+      
       )}
 
       <CardHeader>
