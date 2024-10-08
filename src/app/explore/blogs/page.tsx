@@ -2,6 +2,7 @@
 
 import BlogCard from '@/components/ui/blogs/BlogCard'
 import axios from 'axios';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 
@@ -41,15 +42,17 @@ export default function ExploreBlogs() {
             {blogs.length > 0 && (
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                    {blogs.map((blog) => (
-                        <BlogCard 
-                        key={blog.id} 
-                        title={blog.title} 
-                        body={blog.body} 
-                        thumbnail={blog.thumbnail!} 
-                        tags={blog.tags} 
-                        authorName={blog.authorName}    
-                        authorImage={blog.authorImage!}
-                        />
+                        <Link href={`/explore/blogs/${blog.id}`}>
+                            <BlogCard 
+                            key={blog.id} 
+                            title={blog.title} 
+                            body={blog.body} 
+                            thumbnail={blog.thumbnail!} 
+                            tags={blog.tags} 
+                            authorName={blog.authorName}    
+                            authorImage={blog.authorImage!}
+                            />
+                        </Link>
                    ))}
                 </div>
             )}
