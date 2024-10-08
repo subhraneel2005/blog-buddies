@@ -7,7 +7,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -90,7 +89,8 @@ export default function ExploreSingleBlog() {
         </CardHeader>
         <CardContent>
           {blog.thumbnail && (
-            <Image
+            <img
+              loading="lazy"
               src={blog.thumbnail}
               alt={blog.title}
               width={800}

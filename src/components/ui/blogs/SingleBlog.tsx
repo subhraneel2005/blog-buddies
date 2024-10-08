@@ -90,7 +90,8 @@ export default function SingleBlog() {
         </CardHeader>
         <CardContent>
           {blog.thumbnail && (
-            <Image
+            <img
+              loading="lazy"
               src={blog.thumbnail}
               alt={blog.title}
               width={800}
