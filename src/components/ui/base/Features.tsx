@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import React from "react";
-import Image from "next/image"; // Import Image from Next.js
 import { BentoGrid, BentoGridItem } from "../bento-grid";
 import {
   IconArrowWaveRightUp,
@@ -47,7 +46,7 @@ const items = [
     title: "A Calm, Focused Writing Environment",
     description: "Step into a distraction-free zone, where your words flow as smoothly as a gentle stream through a forest. Blog Buddies is built to help you focus, with a minimalist design.",
     header: (
-      <Image src="/1.png" alt="Calm Writing Environment" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
+      <img loading="lazy" src="/1.png" alt="Calm Writing Environment" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
     ),
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
   },
@@ -55,7 +54,7 @@ const items = [
     title: "Markdown-Powered, Developer-Friendly",
     description: "Built by developers, for developers. Write with the power of Markdown, giving you full control over your content without unnecessary clutter.",
     header: (
-      <Image src="/2.png" alt="Markdown Power" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
+      <img src="/2.png" alt="Markdown Power" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
     ),
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
   },
@@ -63,7 +62,7 @@ const items = [
     title: "Beautiful Dark Mode",
     description: "Whether you prefer the warm glow of daylight or the calming stillness of twilight, Blog Buddies offers a seamless dark mode experience designed for long writing sessions.",
     header: (
-      <Image src="/3.png" alt="Beautiful Dark Mode" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
+      <img loading="lazy" src="/3.png" alt="Beautiful Dark Mode" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
     ),
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
   },
@@ -71,7 +70,8 @@ const items = [
     title: "Ad-Free and Privacy-Focused",
     description: "No ads. No distractions. No data tracking. Just you, your thoughts, and a platform designed to help you share your work with the world in peace.",
     header: (
-      <Image
+      <img
+        loading="lazy"
         src="/4.png"
         alt="Ad-Free and Privacy-Focused"
         width={500}
@@ -85,7 +85,7 @@ const items = [
     title: "The Pursuit of Knowledge",
     description: "Join the quest for understanding and enlightenment, where every exploration deepens your knowledge. Embrace the transformative journey that leads you to profound insights and meaningful connections with the world around you.",
     header: (
-      <Image src="/5.png" alt="Pursuit of Knowledge" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
+      <img loading="lazy" src="/5.png" alt="Pursuit of Knowledge" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
     ),
     icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
   },
@@ -93,7 +93,7 @@ const items = [
     title: "The Joy of Creation",
     description: "Experience the thrill of bringing ideas to life. Witness the satisfaction of crafting something unique, inspiring others, and making a lasting impact through your innovative expressions.",
     header: (
-      <Image src="/6.png" alt="Joy of Creation" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
+      <img loading="lazy" src="/6.png" alt="Joy of Creation" width={500} height={300} className="w-full h-auto rounded-xl object-contain" />
     ),
     icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
   },
@@ -101,7 +101,8 @@ const items = [
     title: "The Spirit of Adventure",
     description: "Embark on exciting journeys and thrilling discoveries.",
     header: (
-      <Image
+      <img 
+        loading="lazy"
         src="/7.png"
         alt="Spirit of Adventure"
         width={500}
