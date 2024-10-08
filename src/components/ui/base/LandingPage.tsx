@@ -58,7 +58,7 @@ export default async function LandingPage() {
       </h1>
 
       <p className='text-[15px] mt-6 font-semibold md:text-lg max-w-3xl text-center px-4 text-gray-700 dark:text-gray-400'>
-        Welcome to Blog Buddies—a distraction-free space for developers to share their ideas.
+        Welcome to Blog Buddies—Opensource distraction-free space for developers to share their ideas.
       </p>
 
       <div className='px-4 flex justify-center items-center gap-6 mt-16'>
