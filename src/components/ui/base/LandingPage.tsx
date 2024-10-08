@@ -67,7 +67,9 @@ export default async function LandingPage() {
         </Link> : <Link href={`/login`}>
         <Button>Start Writing</Button>
         </Link>}
-        <Button variant="outline">Explore</Button>
+        <Link href={'/explore/blogs'}>
+          <Button variant="outline">Explore</Button>
+        </Link>
       </div>
       <div className='mb-24'></div>
     </div>
