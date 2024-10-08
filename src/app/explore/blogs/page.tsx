@@ -42,8 +42,9 @@ export default function ExploreBlogs() {
             {blogs.length > 0 && (
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                    {blogs.map((blog) => (
-                        <Link href={`/explore/blogs/${blog.id}`}>
-                            <BlogCard 
+                            <BlogCard
+                            href={`/explore/blogs/${blog.id}`}
+                            blogId={blog.id}
                             key={blog.id} 
                             title={blog.title} 
                             body={blog.body} 
@@ -52,7 +53,6 @@ export default function ExploreBlogs() {
                             authorName={blog.authorName}    
                             authorImage={blog.authorImage!}
                             />
-                        </Link>
                    ))}
                 </div>
             )}

@@ -239,8 +239,10 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
           <Badge>Your Blogs</Badge>
           <div className='grid grid-cols-1 px-4 md:grid-cols-2 gap-5 mt-8'>
             {existingBlogs.map(blog => (
-              <Link href={`/user/${userId}/blogs/${blog.id}`}>
-                <BlogCard 
+                <BlogCard
+                href={`/user/${userId}/blogs/${blog.id}`}
+                userId={userId}
+                blogId={blog.id}
                 key={blog.id} 
                 title={blog.title} 
                 body={blog.body} 
@@ -249,7 +251,6 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
                 authorName={blog.authorName}    
                 authorImage={blog.authorImage!}
               />
-              </Link>
             ))}
             </div>
         </div>)}

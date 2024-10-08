@@ -11,19 +11,38 @@ import Image from 'next/image';
 import { Avatar, AvatarFallback } from '../avatar';
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { Share2Icon } from 'lucide-react';
+import { toast } from 'sonner';
+import Link from 'next/link';
+import { APP_URL } from '@/providers/Env';
 
 interface BlogCardProps {
+  blogId: string;
   title: string;
   body: string;
   thumbnail: string;
   tags: string[];
   authorName: string;
   authorImage: string;
+  userId?: string;
+  href?: string;
 }
 
-export default function BlogCard({ title, body, thumbnail, tags, authorName, authorImage }: BlogCardProps) {
+export default function BlogCard({ blogId, title, body, thumbnail, tags, authorName, authorImage, userId, href }: BlogCardProps) {
+  
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const url = `${APP_URL}/explore/blogs/${blogId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success('URL copied successfully!');
+    }).catch(() => {
+      toast.error('Failed to copy the URL');
+    });
+  };
 
   return (
+    <Link href={href!} passHref>
     <Card className='w-[350px] flex flex-col justify-between shadow-lg'>
       {thumbnail && (
         <Image
@@ -57,8 +76,14 @@ export default function BlogCard({ title, body, thumbnail, tags, authorName, aut
           </Avatar>
           <p className='text-gray-500 text-[14px]'>{authorName}</p>
         </div>
-        <Share2Icon size={20} className='text-gray-700 dark:text-gray-400 cursor-pointer'/>
+        
+        <Share2Icon 
+          size={20} 
+          className='text-gray-700 dark:text-gray-400 cursor-pointer' 
+          onClick={handleShare} 
+        />
       </CardFooter>
     </Card>
+    </Link>
   );
 }
