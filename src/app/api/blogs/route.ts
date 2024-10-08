@@ -102,6 +102,9 @@ export async function GET(request: Request) {
           },
         },
       },
+      orderBy:{
+        createdAt: 'desc'
+      },
     });
 
     const blogsWithAuthor = blogs.map(blog => ({

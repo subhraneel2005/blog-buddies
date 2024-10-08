@@ -12,6 +12,9 @@ export async function GET(req: NextRequest){
                     },
                 },
             },
+            orderBy:{
+                createdAt: 'desc'
+            },
         });
 
         const blogsWithAutorData = allBlogs.map(blog => ({
@@ -21,7 +24,7 @@ export async function GET(req: NextRequest){
         }));
 
         return NextResponse.json(blogsWithAutorData, {status: 200});
-        
+
     } catch (error) {
         return NextResponse.json({message:"Server error in explore api"}, {status: 500})
     }
