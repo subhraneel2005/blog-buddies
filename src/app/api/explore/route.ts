@@ -23,7 +23,7 @@ export async function GET(req: NextRequest){
             authorImage: blog.user.image,
         }));
 
-        return NextResponse.json(blogsWithAutorData, {status: 200});
+        return NextResponse.json(blogsWithAutorData, { status: 200, headers: { 'Cache-Control': 'no-store, must-revalidate' } });
 
     } catch (error) {
         return NextResponse.json({message:"Server error in explore api"}, {status: 500})
