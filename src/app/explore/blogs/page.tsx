@@ -28,7 +28,11 @@ export default function ExploreBlogs() {
   useEffect(() => {
     const fetchAllBlogs = async () => {
       try {
-        const resp = await axios.get('/api/explore');
+        const resp = await axios.get('/api/explore',{
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
         setBlogs(resp.data);
         setFilteredBlogs(resp.data); // Initially show all blogs
       } catch (error) {
