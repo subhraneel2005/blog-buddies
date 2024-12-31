@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import MDEditor from "@uiw/react-md-editor";
 import { useTheme } from "next-themes";
 import Link from 'next/link';
+import SlashCommandMenu from './SlashCommandMenu';
 
 interface CreateBlogProps {
   userId: string;
@@ -130,6 +131,39 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
     target.style.height = `${target.scrollHeight}px`; 
   };
 
+  type CommandType = 'h1' | 'h2' | 'h3' | 'bullet' | 'number' | 'code' | 'quote' | 'image' | 'table';
+
+  const handleCommandSelect = (command: CommandType) => {
+    switch (command) {
+      case 'h1':
+        setBody(body + '\n# ');
+        break;
+      case 'h2':
+        setBody(body + '\n## ');
+        break;
+      case 'h3':
+        setBody(body + '\n### ');
+        break;
+      case 'bullet':
+        setBody(body + '\n- ');
+        break;
+      case 'number':
+        setBody(body + '\n1. ');
+        break;
+      case 'code':
+        setBody(body + '\n```\n\n```');
+        break;
+      case 'quote':
+        setBody(body + '\n> ');
+        break;
+      case 'image':
+        setBody(body + '\n![Alt text](image-url)');
+        break;
+      case 'table':
+        setBody(body + '\n| Header 1 | Header 2 |\n|----------|----------|\n| Cell 1 | Cell 2 |');
+        break;
+    }
+  };
   
   return (
     <div>
@@ -189,10 +223,8 @@ export default function CreateBlog({ userId }: CreateBlogProps) {
           />
 
           <div className="md:mt-8 mt-5 px-6 w-full max-w-5xl">
-            <MDEditor 
-            value={body} 
-            onChange={handleEditorChange} 
-           data-color-mode={theme === 'dark' ? 'dark' : 'light'}/>
+            <p className='text-center p-4'>Press '/' for commands</p>
+          <SlashCommandMenu onCommandSelect={handleCommandSelect} />
           </div>
 
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

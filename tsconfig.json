@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/Wrapper.js", "src/app/api/blogs/route.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/Wrapper.js", "src/app/api/blogs/route.ts", "src/components/ui/blogs/SlashCommandMenu.tsx"],
   "exclude": ["node_modules"]
 }
